@@ -1,11 +1,16 @@
-import { 
-  GraduationCap, 
-  Award, 
-  Clock, 
-  Users, 
-  Globe, 
-  Brain, 
-  Sparkles 
+import {
+  GraduationCap,
+  Award,
+  Clock,
+  Users,
+  Globe,
+  Brain,
+  Sparkles,
+  BookOpen,
+  Briefcase,
+  MessageCircle,
+  ChevronRight,
+  ArrowRight,
 } from 'lucide-react';
 
 const About = () => {
@@ -47,6 +52,69 @@ const About = () => {
       gradient: 'from-violet-500 to-purple-500'
     },
   ];
+
+  // 业务范围分类数据
+  const courseCategories = [
+    {
+      id: 'language-exams',
+      title: '语言考试培训',
+      icon: 'GraduationCap',
+      gradient: 'from-blue-500 to-indigo-500',
+      description: '出国留学必备，助你冲刺高分',
+      courses: [
+        { name: '雅思IELTS', tag: '8分专家', highlight: true },
+        { name: '托福TOEFL', tag: '阅读满分', highlight: true },
+        { name: 'GRE', tag: '328分策略', highlight: false },
+      ]
+    },
+    {
+      id: 'english-tests',
+      title: '大学英语考试',
+      icon: 'BookOpen',
+      gradient: 'from-purple-500 to-pink-500',
+      description: '四六级冲刺，轻松过关',
+      courses: [
+        { name: '英语四级', tag: '高分攻略', highlight: true },
+        { name: '英语六级', tag: '刷分提升', highlight: true },
+      ]
+    },
+    {
+      id: 'cambridge-exams',
+      title: '剑桥英语等级',
+      icon: 'Award',
+      gradient: 'from-orange-500 to-red-500',
+      description: '国际认可证书，从小培养',
+      courses: [
+        { name: 'KET', tag: '英语入门', highlight: false },
+        { name: 'PET', tag: '初级英语', highlight: false },
+        { name: 'FCE', tag: '中级英语', highlight: false },
+      ]
+    },
+    {
+      id: 'business-english',
+      title: '商务&企业英语',
+      icon: 'Briefcase',
+      gradient: 'from-green-500 to-teal-500',
+      description: '职场必备，提升竞争力',
+      courses: [
+        { name: '商务英语', tag: 'BEC培训', highlight: true },
+        { name: '企业培训', tag: '定制课程', highlight: false },
+      ]
+    }
+  ];
+
+  // 图标映射
+  const iconMap = {
+    GraduationCap,
+    Award,
+    Clock,
+    Users,
+    Globe,
+    Brain,
+    Sparkles,
+    BookOpen,
+    Briefcase,
+  };
 
   return (
     <section className="py-12 md:py-20 lg:py-24 bg-white relative overflow-hidden">
@@ -131,27 +199,76 @@ const About = () => {
           </div>
         </div>
 
-        {/* Teaching Courses */}
+        {/* Training Services - 分类展示 */}
         <div className="bg-gradient-to-br from-slate-50 to-blue-50 rounded-2xl md:rounded-3xl p-6 md:p-8 lg:p-10 border border-slate-100">
-          <h3 className="text-2xl md:text-3xl font-bold text-center text-slate-900 mb-6 md:mb-8 lg:mb-10">
-            主讲课程
-          </h3>
-          <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 md:gap-5">
-            {[
-              '雅思阅读',
-              '雅思写作',
-              '商务英语',
-              '剑桥KET/PET/FCE',
-              '留学考试培训',
-              '企业英语培训',
-            ].map((course, index) => (
-              <div
-                key={index}
-                className="p-3 md:p-4 lg:p-5 bg-white rounded-lg md:rounded-xl text-center font-semibold text-slate-700 shadow-md hover:shadow-xl transition-all duration-300 hover:scale-105 hover:border-blue-300 border border-slate-200 text-xs md:text-sm lg:text-base"
-              >
-                {course}
-              </div>
-            ))}
+          <div className="text-center mb-8 md:mb-10">
+            <h3 className="text-2xl md:text-3xl font-bold text-slate-900 mb-3 md:mb-4">
+              专业英语考试培训
+            </h3>
+            <p className="text-slate-600 text-sm md:text-base max-w-2xl mx-auto">
+              涵盖雅思、托福、四六级、剑桥英语等全方位培训，助您实现英语目标
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-4 md:gap-6">
+            {courseCategories.map((category) => {
+              const IconComponent = iconMap[category.icon as keyof typeof iconMap];
+              return (
+                <div
+                  key={category.id}
+                  className="bg-white rounded-xl md:rounded-2xl p-5 md:p-6 shadow-lg hover:shadow-2xl transition-all duration-300 border border-slate-100 hover:border-blue-200 hover:-translate-y-1"
+                >
+                  {/* Category Header */}
+                  <div className="flex items-center gap-3 mb-4 md:mb-5">
+                    <div className={`flex-shrink-0 w-10 h-10 md:w-12 md:h-12 rounded-lg bg-gradient-to-br ${category.gradient} flex items-center justify-center text-white shadow-md`}>
+                      {IconComponent && <IconComponent className="w-5 h-5 md:w-6 md:h-6" />}
+                    </div>
+                    <div className="flex-1">
+                      <h4 className="text-base md:text-lg font-bold text-slate-900">
+                        {category.title}
+                      </h4>
+                      <p className="text-xs md:text-sm text-slate-600">
+                        {category.description}
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Courses List */}
+                  <div className="space-y-2 md:space-y-2.5">
+                    {category.courses.map((course, courseIndex) => (
+                      <div
+                        key={courseIndex}
+                        className="flex items-center justify-between p-2.5 md:p-3 bg-slate-50 rounded-lg hover:bg-blue-50 transition-colors group"
+                      >
+                        <div className="flex items-center gap-2 md:gap-3 flex-1">
+                          <span className="text-slate-700 font-semibold text-sm md:text-base">
+                            {course.name}
+                          </span>
+                          {course.highlight && (
+                            <span className={`inline-flex items-center px-2 py-0.5 md:px-2.5 md:py-1 bg-gradient-to-r ${category.gradient} text-white text-xs font-bold rounded-full`}>
+                              {course.tag}
+                            </span>
+                          )}
+                        </div>
+                        <ChevronRight className="w-4 h-4 text-slate-400 group-hover:text-blue-600 group-hover:translate-x-0.5 transition-all" />
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+
+          {/* CTA - 联系咨询 */}
+          <div className="mt-6 md:mt-8 text-center">
+            <a
+              href="#contact"
+              className="inline-flex items-center gap-2 px-6 md:px-8 py-3 md:py-4 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-xl md:rounded-2xl font-bold text-sm md:text-base hover:from-blue-700 hover:to-indigo-700 transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105"
+            >
+              <MessageCircle className="w-4 h-4 md:w-5 md:h-5" />
+              免费咨询课程
+              <ArrowRight className="w-4 h-4 md:w-5 md:h-5" />
+            </a>
           </div>
         </div>
       </div>

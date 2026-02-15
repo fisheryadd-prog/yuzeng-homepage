@@ -77,18 +77,23 @@ const Hero = () => {
         </p>
 
         {/* CTA Buttons */}
-        <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
+        <div className="flex flex-col sm:flex-row gap-5 justify-center items-center mb-10">
           <a
             href="#projects"
-            className="group inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-full font-bold text-lg hover:from-blue-700 hover:to-indigo-700 transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105"
+            className="group relative inline-flex items-center gap-3 px-10 py-5 bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 bg-[length:200%_100%] text-white rounded-2xl font-bold text-lg hover:bg-[position:100%_0] transition-all duration-500 shadow-xl hover:shadow-2xl hover:scale-105 hover:-translate-y-1"
           >
-            查看AI项目
-            <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+            <span className="relative z-10 flex items-center gap-3">
+              <Sparkles className="w-5 h-5" />
+              查看AI项目
+              <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+            </span>
+            <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-blue-400 via-indigo-400 to-purple-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-lg" />
           </a>
           <a
             href="#about"
-            className="inline-flex items-center gap-2 px-8 py-4 bg-white text-slate-700 rounded-full font-bold text-lg hover:bg-slate-50 transition-all duration-300 shadow-lg hover:shadow-xl border-2 border-slate-200 hover:border-blue-300"
+            className="inline-flex items-center gap-3 px-10 py-5 bg-white text-slate-700 rounded-2xl font-bold text-lg hover:bg-gradient-to-br hover:from-blue-50 hover:to-indigo-50 transition-all duration-300 shadow-lg hover:shadow-xl border-2 border-slate-200 hover:border-blue-400 hover:scale-105 hover:-translate-y-1"
           >
+            <GraduationCap className="w-5 h-5 text-indigo-600" />
             了解更多
           </a>
         </div>

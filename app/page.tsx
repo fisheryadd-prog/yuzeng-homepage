@@ -1,12 +1,34 @@
 import Header from '@/components/layout/Header';
+import Footer from '@/components/layout/Footer';
 import Hero from '@/components/sections/Hero';
 import About from '@/components/sections/About';
-import Projects from '@/components/sections/Projects';
-import Qualifications from '@/components/sections/Qualifications';
-import Contact from '@/components/sections/Contact';
-import Comments from '@/components/sections/Comments';
-import Footer from '@/components/layout/Footer';
-import AIAssistant from '@/components/sections/AIAssistant';
+import dynamic from 'next/dynamic';
+import { SectionSkeleton } from '@/components/skeletons/SectionSkeleton';
+import { CommentsSkeleton } from '@/components/skeletons/CommentsSkeleton';
+
+// 非首屏组件使用动态导入以提升首屏加载性能
+const Projects = dynamic(() => import('@/components/sections/Projects'), {
+  loading: () => <SectionSkeleton />,
+});
+
+const Qualifications = dynamic(() => import('@/components/sections/Qualifications'), {
+  loading: () => <SectionSkeleton />,
+});
+
+const Contact = dynamic(() => import('@/components/sections/Contact'), {
+  loading: () => <SectionSkeleton />,
+});
+
+const Comments = dynamic(() => import('@/components/sections/Comments'), {
+  loading: () => <CommentsSkeleton />,
+});
+
+const AIAssistant = dynamic(() => import('@/components/sections/AIAssistant'), {
+  loading: () => null,
+});
+
+// ISR重新验证：每小时重新生成页面
+export const revalidate = 3600;
 
 const jsonLd = {
   '@context': 'https://schema.org',

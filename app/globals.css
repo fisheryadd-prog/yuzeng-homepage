@@ -77,6 +77,7 @@
   }
 
   .animate-float {
+    will-change: transform;
     animation: float 6s ease-in-out infinite;
   }
 
@@ -87,4 +88,76 @@
   .animate-bounce-slow {
     animation: bounce 2s infinite;
   }
+
+  /* 移动端动画性能优化 */
+  @media (max-width: 767px) {
+    .animate-float {
+      animation: float-mobile 8s ease-in-out infinite;
+      will-change: transform;
+    }
+
+    @keyframes float-mobile {
+      0%, 100% {
+        transform: translateY(0px);
+      }
+      50% {
+        transform: translateY(-5px);
+      }
+    }
+
+    /* 移动端禁用复杂动画 */
+    .mobile-no-animation {
+      animation: none !important;
+      transition: none !important;
+    }
+  }
+
+  /* 触摸设备专用样式 */
+  @media (hover: none) and (pointer: coarse) {
+    .touch-feedback {
+      -webkit-tap-highlight-color: rgba(59, 130, 246, 0.2);
+      transition: transform 0.1s ease-out, opacity 0.2s ease-out;
+    }
+
+    .touch-feedback:active {
+      transform: scale(0.97);
+      opacity: 0.8;
+    }
+  }
+
+  /* GPU加速 */
+  .gpu-accelerated {
+    transform: translateZ(0);
+    will-change: transform;
+    backface-visibility: hidden;
+  }
+
+  /* 优化的淡入动画 */
+  @keyframes fade-in-optimized {
+    from {
+      opacity: 0;
+      transform: translate3d(0, 20px, 0);
+    }
+    to {
+      opacity: 1;
+      transform: translate3d(0, 0, 0);
+    }
+  }
+
+  .animate-fade-in-optimized {
+    animation: fade-in-optimized 0.6s ease-out;
+    will-change: opacity, transform;
+  }
+
+  /* Reduced motion preference support */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
 }
+

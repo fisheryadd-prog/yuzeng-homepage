@@ -1,37 +1,13 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState } from 'react';
 import { Sparkles } from 'lucide-react';
+import { useScroll } from '@/hooks/useScroll';
+import { NAV_ITEMS } from '@/constants/navigation';
 
 const Header = () => {
-  const [isScrolled, setIsScrolled] = useState(false);
+  const isScrolled = useScroll(50);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const scrollRef = useRef(false);
-
-  const navItems = [
-    { label: '首页', href: '#hero' },
-    { label: '关于我', href: '#about' },
-    { label: 'AI项目', href: '#projects' },
-    { label: '资质证书', href: '#qualifications' },
-    { label: '联系方式', href: '#contact' },
-    { label: '学员留言', href: '#comments' },
-  ];
-
-  useEffect(() => {
-    const handleScroll = () => {
-      const newScrolled = window.scrollY > 50;
-      if (newScrolled !== isScrolled && !scrollRef.current) {
-        setIsScrolled(newScrolled);
-        scrollRef.current = true;
-        requestAnimationFrame(() => {
-          scrollRef.current = false;
-        });
-      }
-    };
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [isScrolled]);
 
   const handleNavClick = (href: string) => {
     setIsMobileMenuOpen(false);
@@ -74,7 +50,7 @@ const Header = () => {
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
-            {navItems.map((item, index) => (
+            {NAV_ITEMS.map((item, index) => (
               <button
                 key={item.href}
                 onClick={() => handleNavClick(item.href)}
@@ -94,7 +70,9 @@ const Header = () => {
             className={`md:hidden p-2 rounded-lg transition-colors ${
               isScrolled ? 'text-slate-700' : 'text-white'
             }`}
-            aria-label="Toggle menu"
+            aria-label={isMobileMenuOpen ? '关闭菜单' : '打开菜单'}
+            aria-expanded={isMobileMenuOpen}
+            aria-controls="mobile-menu"
           >
             <svg
               className="w-6 h-6"
@@ -106,9 +84,9 @@ const Header = () => {
               stroke="currentColor"
             >
               {isMobileMenuOpen ? (
-                <path d="M6 18L18 6M6M6l12 12" />
+                <path d="M6 18L18 6M6 6l12 12" />
               ) : (
-                <path d="M4 6h16M4 12h16M4 12h16M4 12h16M4 12h16M4 12h16M6 18L18 6l12 12" />
+                <path d="M4 6h16M4 12h16M6 18l12 12" />
               )}
             </svg>
           </button>
@@ -116,15 +94,20 @@ const Header = () => {
 
         {/* Mobile Menu */}
         {isMobileMenuOpen && (
-          <div className="md:hidden bg-white/95 backdrop-blur-md shadow-xl rounded-2xl mt-2 p-4 space-y-2">
-            {navItems.map((item, index) => (
+          <div
+            id="mobile-menu"
+            role="navigation"
+            aria-label="移动端导航菜单"
+            className="md:hidden bg-white/95 backdrop-blur-md shadow-xl rounded-2xl mt-2 p-4 space-y-2"
+          >
+            {NAV_ITEMS.map((item, index) => (
               <button
                 key={item.href}
                 onClick={() => handleNavClick(item.href)}
-                className={`block w-full text-left px-4 py-3 rounded-xl transition-colors ${
+                className={`block w-full text-left px-4 py-3 rounded-xl transition-all ${
                   index === 2
-                    ? 'bg-gradient-to-r from-purple-50/10 to-pink-50/10 text-purple-700 font-semibold'
-                    : 'text-slate-700 hover:bg-slate-50 hover:bg-purple-100 transition-colors'
+                    ? 'bg-gradient-to-r from-purple-50 to-pink-50 text-purple-700 font-semibold'
+                    : 'text-slate-700 hover:bg-purple-50'
                 }`}
               >
                 {item.label}

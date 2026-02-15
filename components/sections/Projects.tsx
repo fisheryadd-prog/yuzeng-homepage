@@ -1,53 +1,21 @@
-import { 
-  ExternalLink, 
-  ChevronRight, 
-  Sparkles, 
-  MessageSquare, 
+import {
+  ExternalLink,
+  ChevronRight,
+  Sparkles,
+  MessageSquare,
   Brain,
-  GraduationCap,
   Globe,
-  Layout
 } from 'lucide-react';
+import { PROJECTS } from '@/constants/projects';
+import { SectionHeader } from '@/components/shared/SectionHeader';
+
+const iconMap = {
+  MessageSquare,
+  Brain,
+  Globe,
+} as const;
 
 const Projects = () => {
-  const projects = [
-    {
-      title: 'Fisher2IELTS',
-      description: 'AI驱动的雅思口语教学平台，提供个性化口语练习和即时反馈',
-      link: 'https://fisher2ielts.vercel.app/',
-      icon: <MessageSquare className="w-12 h-12" />,
-      gradient: 'from-blue-500 to-cyan-500',
-      tags: ['雅思口语', 'AI练习', '即时反馈'],
-      status: '已上线'
-    },
-    {
-      title: 'MBTI测试平台',
-      description: '基于AI的个性化MBTI人格测试，深入探索性格特点与职业匹配',
-      link: 'https://www.doubao.com/share/code/c19754a0eb674dbc?is_code=1',
-      icon: <Brain className="w-12 h-12" />,
-      gradient: 'from-purple-500 to-pink-500',
-      tags: ['MBTI测试', 'AI分析', '职业规划'],
-      status: '已上线'
-    },
-    {
-      title: '雅思口语陪练',
-      description: '基于AI的雅思口语陪练平台，提供实时对话、发音纠正和表达优化',
-      link: 'https://801dd437869343d2b840367831cd97d1.prod.enter.pro',
-      icon: <MessageSquare className="w-12 h-12" />,
-      gradient: 'from-orange-500 to-red-500',
-      tags: ['雅思口语', 'AI陪练', '实时对话'],
-      status: '已上线'
-    },
-    {
-      title: '我的IP星工坊',
-      description: 'IP打造与内容创作平台，帮助个人建立和提升个人品牌影响力',
-      link: 'https://app-804sy5lzq4g1.appmiaoda.com',
-      icon: <Globe className="w-12 h-12" />,
-      gradient: 'from-green-500 to-teal-500',
-      tags: ['IP打造', '内容创作', '个人品牌'],
-      status: '已上线'
-    }
-  ];
 
   return (
     <section id="projects" className="py-16 md:py-24 bg-gradient-to-b from-white via-blue-50 to-indigo-50 relative overflow-hidden">
@@ -57,28 +25,18 @@ const Projects = () => {
 
       <div className="container-custom relative z-10 px-4">
         {/* Section Header */}
-        <div className="text-center mb-20">
-          <div className="inline-flex items-center gap-2 mb-6 px-4 py-2 bg-gradient-to-r from-blue-100 to-indigo-100 rounded-full">
-            <Sparkles className="w-5 h-5 text-blue-600" />
-            <span className="text-sm font-semibold text-blue-700">AI驱动的创新</span>
-          </div>
-
-          <h2 className="text-4xl md:text-6xl font-bold mb-6">
-            <span className="bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 bg-clip-text text-transparent">
-              我的AI项目
-            </span>
-          </h2>
-
-          <p className="text-xl text-slate-600 max-w-3xl mx-auto leading-relaxed">
-            依托AI技术，打造多个创新应用，将人工智能融入教育、企业服务和个人品牌等领域，
-            <br className="hidden md:block" />
-            提供更智能、更高效的解决方案
-          </p>
-        </div>
+        <SectionHeader
+          icon={<Sparkles className="w-5 h-5 text-blue-600" />}
+          badge="AI驱动的创新"
+          title="我的AI项目"
+          description="依托AI技术，打造多个创新应用，将人工智能融入教育、企业服务和个人品牌等领域，提供更智能、更高效的解决方案"
+        />
 
         {/* Projects Grid */}
         <div className="grid md:grid-cols-2 gap-8 mb-16">
-          {projects.map((project, index) => (
+          {PROJECTS.map((project, index) => {
+            const IconComponent = iconMap[project.icon as keyof typeof iconMap];
+            return (
             <a
               key={index}
               href={project.link}
@@ -100,7 +58,7 @@ const Projects = () => {
 
               {/* Icon */}
               <div className={`mb-6 w-14 h-14 md:w-16 md:h-16 rounded-xl bg-gradient-to-br ${project.gradient} flex items-center justify-center text-white shadow-lg group-hover:scale-110 transition-transform`}>
-                {project.icon}
+                {IconComponent && <IconComponent className="w-12 h-12" />}
               </div>
 
               {/* Content */}
@@ -131,7 +89,8 @@ const Projects = () => {
                 <ExternalLink className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity" />
               </div>
             </a>
-          ))}
+            );
+          })}
         </div>
 
         {/* Call to Action */}

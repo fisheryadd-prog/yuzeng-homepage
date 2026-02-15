@@ -1,4 +1,4 @@
-import { MessageCircle, Globe, Mail, Phone, MapPin, Linkedin } from 'lucide-react';
+import { MessageCircle, Globe, Mail, Phone, MapPin, Linkedin, Heart } from 'lucide-react';
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -89,18 +89,54 @@ const Footer = () => {
           </div>
 
           {/* Bottom Bar */}
-          <div className="pt-8 border-t border-slate-700 text-center">
-            <p className="text-slate-400 text-base mb-2">
-              &copy; {currentYear} Fisher老师. All rights reserved.
-            </p>
-            <div className="mt-4 flex items-center gap-6 text-sm">
-              <a href="#" className="text-slate-400 hover:text-blue-400 transition-colors">
-                隐私政策
-              </a>
-              <span className="text-slate-600">|</span>
-              <a href="#" className="text-slate-400 hover:text-blue-400 transition-colors">
-                使用条款
-              </a>
+          <div className="md:col-span-3 pt-8 border-t border-slate-700">
+            <div className="flex flex-col md:flex-row justify-between items-center gap-6">
+              {/* Copyright */}
+              <div className="flex items-center gap-4">
+                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center shadow-lg">
+                  <Globe className="w-5 h-5 text-white" />
+                </div>
+                <div className="text-left">
+                  <p className="text-white font-semibold text-base">
+                    &copy; {currentYear} Fisher老师
+                  </p>
+                  <p className="text-slate-400 text-sm">
+                    All rights reserved.
+                  </p>
+                </div>
+              </div>
+
+              {/* Divider */}
+              <div className="hidden md:block w-px h-12 bg-gradient-to-b from-transparent via-slate-600 to-transparent" />
+
+              {/* Links */}
+              <div className="flex items-center gap-8 text-sm">
+                <a href="#" className="group flex items-center gap-2 text-slate-400 hover:text-blue-400 transition-all duration-300">
+                  <span>隐私政策</span>
+                  <span className="opacity-0 group-hover:opacity-100 transition-opacity">→</span>
+                </a>
+                <a href="#" className="group flex items-center gap-2 text-slate-400 hover:text-blue-400 transition-all duration-300">
+                  <span>使用条款</span>
+                  <span className="opacity-0 group-hover:opacity-100 transition-opacity">→</span>
+                </a>
+              </div>
+
+              {/* Social Badge */}
+              <div className="flex items-center gap-2 px-4 py-2 bg-slate-800/50 rounded-xl border border-slate-700">
+                <Heart className="w-4 h-4 text-red-400 fill-red-400" />
+                <span className="text-slate-300 text-sm font-medium">用心教学</span>
+              </div>
+            </div>
+
+            {/* Additional Info */}
+            <div className="mt-8 text-center">
+              <p className="text-slate-500 text-sm leading-relaxed">
+                专注英语教学十余年 · 雅思8分专家 · 助力梦校申请
+                <span className="mx-2 text-slate-600">|</span>
+                <span className="text-blue-400">Made with</span>
+                <span className="text-red-400 mx-1">❤</span>
+                <span className="text-blue-400">in China</span>
+              </p>
             </div>
           </div>
         </div>

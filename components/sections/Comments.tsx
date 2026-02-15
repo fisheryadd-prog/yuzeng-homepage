@@ -1,18 +1,12 @@
 'use client';
 
 import { useState } from 'react';
-import { MessageCircle, Star, Clock, User, Heart, ThumbsUp, Send } from 'lucide-react';
-
-interface Comment {
-  id: string;
-  name: string;
-  content: string;
-  date: string;
-  likes: number;
-}
+import { MessageCircle, Star, Clock, User, Heart, ThumbsUp, Send, CheckCircle, AlertCircle } from 'lucide-react';
+import { useLocalStorage } from '@/hooks/useLocalStorage';
+import { Comment } from '@/types';
 
 const Comments = () => {
-  const [comments, setComments] = useState<Comment[]>([
+  const [comments, setComments] = useLocalStorage<Comment[]>('fisher-comments', [
     {
       id: '1',
       name: '小王',
@@ -42,12 +36,40 @@ const Comments = () => {
     content: '',
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const [errors, setErrors] = useState<{ name?: string; content?: string }>({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitSuccess, setSubmitSuccess] = useState(false);
+
+  const validateForm = () => {
+    const newErrors: typeof errors = {};
+
+    if (!formData.name.trim()) {
+      newErrors.name = '请输入您的姓名';
+    } else if (formData.name.length < 2) {
+      newErrors.name = '姓名至少2个字符';
+    }
+
+    if (!formData.content.trim()) {
+      newErrors.content = '请输入留言内容';
+    } else if (formData.content.length < 10) {
+      newErrors.content = '留言内容至少10个字符';
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!formData.name.trim() || !formData.content.trim()) {
+    if (!validateForm()) {
       return;
     }
+
+    setIsSubmitting(true);
+
+    // 模拟API调用延迟
+    await new Promise(resolve => setTimeout(resolve, 1000));
 
     const newComment: Comment = {
       id: Date.now().toString(),
@@ -59,6 +81,10 @@ const Comments = () => {
 
     setComments([newComment, ...comments]);
     setFormData({ name: '', email: '', content: '' });
+    setSubmitSuccess(true);
+    setIsSubmitting(false);
+
+    setTimeout(() => setSubmitSuccess(false), 3000);
   };
 
   const handleLike = (id: string) => {
@@ -101,23 +127,49 @@ const Comments = () => {
                 发表留言
               </h3>
 
-              <form onSubmit={handleSubmit} className="space-y-5">
+              <form onSubmit={handleSubmit} className="space-y-5" aria-labelledby="comment-form-title">
+                <h3 id="comment-form-title" className="sr-only">发表留言表单</h3>
+
+                {/* 成功提示 */}
+                {submitSuccess && (
+                  <div className="mb-4 p-4 bg-green-100 text-green-700 rounded-xl flex items-center gap-2 animate-fade-in">
+                    <CheckCircle className="w-5 h-5 flex-shrink-0" />
+                    <span className="font-medium">留言发布成功！</span>
+                  </div>
+                )}
+
                 <div>
                   <label
-                        htmlFor="comment-name"
-                        className="block text-sm font-semibold text-slate-700 mb-2"
+                    htmlFor="comment-name"
+                    className="block text-sm font-semibold text-slate-700 mb-2"
                   >
-                    姓名 *
+                    姓名 <span className="text-red-500" aria-label="必填">*</span>
                   </label>
                   <input
                     type="text"
                     id="comment-name"
                     value={formData.name}
-                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                    className="w-full px-4 py-3 rounded-xl border-2 border-slate-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all text-slate-900 text-base"
+                    onChange={(e) => {
+                      setFormData({ ...formData, name: e.target.value });
+                      if (errors.name) setErrors({ ...errors, name: undefined });
+                    }}
+                    className={`w-full px-4 py-3 rounded-xl border-2 focus:ring-2 transition-all text-slate-900 text-base ${
+                      errors.name
+                        ? 'border-red-300 focus:border-red-500 focus:ring-red-500/20'
+                        : 'border-slate-200 focus:border-blue-500 focus:ring-blue-500/20'
+                    }`}
                     placeholder="请输入您的姓名"
                     required
+                    aria-required="true"
+                    aria-invalid={!!errors.name}
+                    aria-describedby={errors.name ? 'comment-name-error' : undefined}
                   />
+                  {errors.name && (
+                    <span id="comment-name-error" className="text-red-500 text-sm mt-1.5 flex items-center gap-1" role="alert">
+                      <AlertCircle className="w-4 h-4" />
+                      {errors.name}
+                    </span>
+                  )}
                 </div>
 
                 <div>
@@ -139,28 +191,54 @@ const Comments = () => {
 
                 <div>
                   <label
-                        htmlFor="comment-content"
-                        className="block text-sm font-semibold text-slate-700 mb-2"
+                    htmlFor="comment-content"
+                    className="block text-sm font-semibold text-slate-700 mb-2"
                   >
-                    留言内容 *
+                    留言内容 <span className="text-red-500" aria-label="必填">*</span>
                   </label>
                   <textarea
                     id="comment-content"
                     value={formData.content}
-                    onChange={(e) => setFormData({ ...formData, content: e.target.value })}
+                    onChange={(e) => {
+                      setFormData({ ...formData, content: e.target.value });
+                      if (errors.content) setErrors({ ...errors, content: undefined });
+                    }}
                     rows={5}
-                    className="w-full px-4 py-3 rounded-xl border-2 border-slate-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all text-slate-900 text-base resize-none"
+                    className={`w-full px-4 py-3 rounded-xl border-2 focus:ring-2 transition-all text-slate-900 text-base resize-none ${
+                      errors.content
+                        ? 'border-red-300 focus:border-red-500 focus:ring-red-500/20'
+                        : 'border-slate-200 focus:border-blue-500 focus:ring-blue-500/20'
+                    }`}
                     placeholder="分享您的学习心得或提问..."
                     required
+                    aria-required="true"
+                    aria-invalid={!!errors.content}
+                    aria-describedby={errors.content ? 'comment-content-error' : undefined}
                   />
+                  {errors.content && (
+                    <span id="comment-content-error" className="text-red-500 text-sm mt-1.5 flex items-center gap-1" role="alert">
+                      <AlertCircle className="w-4 h-4" />
+                      {errors.content}
+                    </span>
+                  )}
                 </div>
 
                 <button
                   type="submit"
-                  className="w-full px-6 py-4 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-xl font-bold text-lg hover:from-blue-700 hover:to-indigo-700 transition-all duration-300 shadow-lg hover:shadow-xl hover:-translate-y-0.5 flex items-center justify-center gap-2"
+                  disabled={isSubmitting}
+                  className="w-full px-6 py-4 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-xl font-bold text-lg hover:from-blue-700 hover:to-indigo-700 transition-all duration-300 shadow-lg hover:shadow-xl hover:-translate-y-0.5 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:from-blue-600 disabled:hover:to-indigo-600 disabled:hover:translate-y-0"
                 >
-                  <Send className="w-5 h-5" />
-                  发布留言
+                  {isSubmitting ? (
+                    <>
+                      <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                      发布中...
+                    </>
+                  ) : (
+                    <>
+                      <Send className="w-5 h-5" />
+                      发布留言
+                    </>
+                  )}
                 </button>
               </form>
             </div>
