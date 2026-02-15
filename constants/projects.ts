@@ -4,7 +4,7 @@ export const PROJECTS: Project[] = [
   {
     title: 'Fisher2IELTS',
     description: 'AI驱动的雅思口语教学平台，提供个性化口语练习和即时反馈',
-    link: 'https://fisher2ielts.vercel.app/',
+    link: 'https://speaking-ielts.pages.dev/',
     icon: 'MessageSquare',
     gradient: 'from-blue-500 to-cyan-500',
     tags: ['雅思口语', 'AI练习', '即时反馈'],
