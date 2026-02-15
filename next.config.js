@@ -11,10 +11,7 @@ const nextConfig = {
   poweredByHeader: false,
   reactStrictMode: true,
   compress: true, // 启用gzip压缩
-  swcMinify: true, // 使用SWC压缩
-  experimental: {
-    optimizeCss: true, // 优化CSS
-  },
+  swcMinify: true, // 使用SWC压缩（包含CSS优化）
 };
 
 module.exports = nextConfig;
