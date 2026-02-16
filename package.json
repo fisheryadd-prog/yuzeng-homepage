@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "deploy": "echo 'Build complete - Cloudflare Pages will handle deployment'",
     "start": "next start",
     "lint": "next lint"
   },
