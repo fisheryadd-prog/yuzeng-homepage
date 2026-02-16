@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "build:cf": "next build",
+    "deploy": "npx wrangler pages deploy .next --project-name=yuzeng-homepage",
     "start": "next start",
     "lint": "next lint"
   },
