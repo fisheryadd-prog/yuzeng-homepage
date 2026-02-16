@@ -23,10 +23,6 @@ const Comments = dynamic(() => import('@/components/sections/Comments'), {
   loading: () => <CommentsSkeleton />,
 });
 
-const AIAssistant = dynamic(() => import('@/components/sections/AIAssistant'), {
-  loading: () => null,
-});
-
 // ISR重新验证：每小时重新生成页面
 export const revalidate = 3600;
 
@@ -84,8 +80,6 @@ export default function Home() {
         </section>
 
         <Footer />
-
-        <AIAssistant />
       </main>
     </>
   );
