@@ -1,5 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  // 静态导出配置 - 生成静态 HTML 文件用于 Cloudflare Pages
+  output: 'export',
+
   // 图片优化配置 - 静态导出时需要禁用优化
   images: {
     unoptimized: true, // 静态导出必须禁用图片优化
