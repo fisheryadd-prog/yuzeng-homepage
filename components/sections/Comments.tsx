@@ -6,29 +6,7 @@ import { useLocalStorage } from '@/hooks/useLocalStorage';
 import { Comment } from '@/types';
 
 const Comments = () => {
-  const [comments, setComments] = useLocalStorage<Comment[]>('fisher-comments', [
-    {
-      id: '1',
-      name: '小王',
-      content: 'Fisher老师的雅思课程真的太棒了！跟着老师学了两个月，阅读从6分提升到了8.5分，非常感谢！',
-      date: '2024-01-15',
-      likes: 12,
-    },
-    {
-      id: '2',
-      name: '李同学',
-      content: '老师的教学方法很独特，不只是讲技巧，更重要的是教我们如何思考。推荐给所有备考雅思的同学！',
-      date: '2024-01-10',
-      likes: 8,
-    },
-    {
-      id: '3',
-      name: '张明',
-      content: '咨询了很多老师，回复都很及时。报名了一对一辅导后，感觉进步非常明显，5月考试有信心了！',
-      date: '2024-01-08',
-      likes: 15,
-    },
-  ]);
+  const [comments, setComments] = useLocalStorage<Comment[]>('fisher-comments', []);
 
   const [formData, setFormData] = useState({
     name: '',
